@@ -1,22 +1,65 @@
-sudo : false
+sudo: false
 
 notifications:
   email: false
 
 language: C++
 
-compiler: 
-    - gcc
+matrix:
+  include:
+    - compiler: gcc
+      env: 
+        - COMPILE_WITH_MPI=OFF
+        - COMPILER=/usr/bin/g++
+    - compiler: gcc
+      env: 
+        - COMPILE_WITH_MPI=ON
+        - COMPILER=/usr/bin/mpicxx
+    - compiler: clang
+      env: 
+        - COMPILE_WITH_MPI=OFF
+        - COMPILER=/usr/bin/clang++-3.6
+    - compiler: clang
+      env: 
+        - COMPILE_WITH_MPI=ON
+        - COMPILER=/usr/bin/mpicxx
 
 cache: 
+  apt: true
   directories:
     - programs
 
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    - llvm-toolchain-precise-3.6
+    - george-edison55-precise-backports
+    packages:
+    - ninja-build
+    - openmpi-bin
+    - libopenmpi-dev
+    - clang-3.6
+    - cmake
+    - cmake-data
+    - build-essential
+    - libblas-dev
+    - liblapack-dev
+    - libboost-dev
+    - doxygen
+    - graphviz
+
 install:
     - export PATH=$PWD/programs/astyle/build/gcc/bin:$PATH
+    - export CXX=$COMPILER
     - ./contrib/utilities/setup_astyle.sh 
+    - mkdir build
+    - cd build
+    - cmake -GNinja -DDEAL_II_WITH_MPI=$COMPILE_WITH_MPI ..
+    - ninja -j4
 
 script: 
+    - cd ..
     - ./contrib/utilities/check_indentation.sh 
 
 branches:
