@@ -5,24 +5,31 @@ notifications:
 
 language: C++
 
+#matrix:
+#  include:
+#    - compiler: gcc
+#      env: 
+#        - COMPILE_WITH_MPI=OFF
+#        - COMPILER=/usr/bin/g++
+#    - compiler: gcc
+#      env: 
+#        - COMPILE_WITH_MPI=ON
+#        - COMPILER=/usr/bin/mpicxx
+#    - compiler: clang
+#      env: 
+#        - COMPILE_WITH_MPI=OFF
+#        - COMPILER=/usr/bin/clang++-3.6
+#    - compiler: clang
+#      env: 
+#        - COMPILE_WITH_MPI=ON
+#        - COMPILER=/usr/bin/mpicxx
 matrix:
-  include:
-    - compiler: gcc
-      env: 
-        - COMPILE_WITH_MPI=OFF
-        - COMPILER=/usr/bin/g++
-    - compiler: gcc
-      env: 
-        - COMPILE_WITH_MPI=ON
-        - COMPILER=/usr/bin/mpicxx
-    - compiler: clang
-      env: 
-        - COMPILE_WITH_MPI=OFF
-        - COMPILER=/usr/bin/clang++-3.6
-    - compiler: clang
-      env: 
-        - COMPILE_WITH_MPI=ON
-        - COMPILER=/usr/bin/mpicxx
+    compiler: 
+      - gcc
+      - clang
+    env: 
+      - COMPILE_WITH_MPI=OFF
+      - COMPILE_WITH_MPI=ON
 
 cache: 
   apt: true
@@ -53,15 +60,12 @@ install:
     - export PATH=$PWD/programs/astyle/build/gcc/bin:$PATH
     - export CXX=$COMPILER
     - ./contrib/utilities/setup_astyle.sh 
-    - mkdir build
-    - cd build
-    - cmake -GNinja -DDEAL_II_WITH_MPI=$COMPILE_WITH_MPI ..
+    - ./contrib/utilities/check_indentation.sh && mkdir build && cd build && cmake -GNinja -DDEAL_II_WITH_MPI=$COMPILE_WITH_MPI ..
     - ninja -j4
 
 script: 
-    - cd ..
-    - ./contrib/utilities/check_indentation.sh 
+    - ninja tests
 
-branches:
-  only:
-    - master
+#branches:
+#  only:
+#    - master
