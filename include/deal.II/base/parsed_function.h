@@ -85,7 +85,8 @@ namespace Functions
      * to initialize the AutoDerivativeFunction class from which this class is
      * derived.
      */
-    ParsedFunction (const unsigned int n_components = 1, const double h=1e-8);
+                 ParsedFunction (const unsigned int n_components = 1, 
+        const double h=1e-8);
 
     /**
      * Declare parameters needed by this class. The additional parameter @p

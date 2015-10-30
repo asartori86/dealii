@@ -58,11 +58,16 @@ addons:
     - doxygen
     - graphviz
 
-install:
+before_install:
     - export PATH=$PWD/programs/astyle/build/gcc/bin:$PATH
-    - export CXX=$COMPILER
     - ./contrib/utilities/setup_astyle.sh 
-    - ./contrib/utilities/check_indentation.sh && mkdir build && cd build && cmake -GNinja -DDEAL_II_WITH_MPI=$COMPILE_WITH_MPI -DDEAL_II_WITH_CXX11=$CXX11 ..
+    - ./contrib/utilities/check_indentation.sh 
+
+install:
+    - export CXX=$COMPILER
+    - mkdir build 
+    - cd build 
+    - cmake -GNinja -DDEAL_II_WITH_MPI=$COMPILE_WITH_MPI -DDEAL_II_WITH_CXX11=$CXX11 ..
     - ninja -j4
 
 script: 
