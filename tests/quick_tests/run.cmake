@@ -60,6 +60,6 @@ recent version or use a different MPI library like MPICH.\n"
     ENDIF()
 
   ENDFOREACH()
-  MESSAGE(FATAL ERROR "quick tests failed")
+  MESSAGE(FATAL_ERROR "quick tests failed")
 
 ENDIF()
