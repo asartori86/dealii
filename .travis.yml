@@ -66,7 +66,7 @@ before_install:
 install:
     - export CXX=$COMPILER
     - export BUILD_DIR=$PWD/programs/dealii-build
-    - mkdir -p $BUILD_DIR
+      #    - mkdir -p $BUILD_DIR
     - cd $BUILD_DIR
     - cmake -GNinja -DDEAL_II_WITH_MPI=$COMPILE_WITH_MPI -DDEAL_II_WITH_CXX11=$CXX11 ../..
     - ninja -j4
