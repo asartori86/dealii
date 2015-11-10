@@ -1,5 +1,5 @@
 sudo: false
-
+warnings_are_errors: true
 notifications:
   email: false
 
@@ -7,31 +7,31 @@ language: C++
 
 matrix:
   include:
-    - compiler: gcc
-      env: 
-        - COMPILE_WITH_MPI=OFF
-        - COMPILER=/usr/bin/g++
-        - CXX11=ON
-    - compiler: gcc
-      env: 
-        - COMPILE_WITH_MPI=ON
-        - COMPILER=/usr/bin/mpicxx
-        - CXX11=ON
-    - compiler: gcc
-      env: 
-        - COMPILE_WITH_MPI=ON
-        - COMPILER=/usr/bin/mpicxx
-        - CXX11=OFF
+    #    - compiler: gcc
+    #      env: 
+    #        - COMPILE_WITH_MPI=OFF
+    #        - COMPILER=/usr/bin/g++
+    #        - CXX11=ON
+    #    - compiler: gcc
+    #      env: 
+    #        - COMPILE_WITH_MPI=ON
+    #        - COMPILER=/usr/bin/mpicxx
+    #        - CXX11=ON
+    #    - compiler: gcc
+    #      env: 
+    #        - COMPILE_WITH_MPI=ON
+    #        - COMPILER=/usr/bin/mpicxx
+    #        - CXX11=OFF
     - compiler: clang
       env: 
         - COMPILE_WITH_MPI=OFF
         - COMPILER=/usr/bin/clang++-3.6
         - CXX11=ON
-    - compiler: clang
-      env: 
-        - COMPILE_WITH_MPI=ON
-        - COMPILER=/usr/bin/mpicxx
-        - CXX11=ON
+    #    - compiler: clang
+    #      env: 
+    #        - COMPILE_WITH_MPI=ON
+    #        - COMPILER=/usr/bin/mpicxx
+    #        - CXX11=ON
 
 cache: 
   apt: true
@@ -65,9 +65,10 @@ before_install:
 
 install:
     - export CXX=$COMPILER
-    - mkdir build 
-    - cd build 
-    - cmake -GNinja -DDEAL_II_WITH_MPI=$COMPILE_WITH_MPI -DDEAL_II_WITH_CXX11=$CXX11 ..
+    - export BUILD_DIR=$PWD/programs/build-dir
+    - mkdir $PWD/programs/dealii-build
+    - cd $BUILD_DIR
+    - cmake -GNinja -DDEAL_II_WITH_MPI=$COMPILE_WITH_MPI -DDEAL_II_WITH_CXX11=$CXX11 ../..
     - ninja -j4
 
 script: 
