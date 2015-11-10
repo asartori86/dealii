@@ -74,6 +74,6 @@ install:
 script: 
     - ninja test
 
-branches:
-  only:
-    - master
+#branches:
+#  only:
+#    - master
